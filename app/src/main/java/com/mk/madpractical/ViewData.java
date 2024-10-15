@@ -1,7 +1,9 @@
 package com.mk.madpractical;
 
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 
 public class ViewData extends AppCompatActivity {
     private ListView listView;
-    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +26,13 @@ public class ViewData extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-
         listView = findViewById(R.id.showData);
-        dbHelper = new DatabaseHelper(this);
-
-        listView.setAdapter(dbHelper.getAdapter());
+        ArrayAdapter adaper = new DBHelper(this).getAdapter();
+        if (adaper.getCount() > 0) {
+            listView.setAdapter(adaper);
+        } else {
+            Toast.makeText(this, "The Database is empty!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 

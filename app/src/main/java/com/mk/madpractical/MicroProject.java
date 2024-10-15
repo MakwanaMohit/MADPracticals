@@ -1,58 +1,41 @@
 package com.mk.madpractical;
 
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-import org.json.JSONArray;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
-
-import okhttp3.Call;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-import java.io.IOException;
-
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-//import java.util.logging.Handler;
+import androidx.activity.result.ActivityResultLauncher;
+import java.util.ArrayList;
+import java.util.Set;
 
 public class MicroProject extends AppCompatActivity {
-    public static final String BROCAST_INTENT_FILTER = "com.mk.MainBrodcast";
-    private Button scan, view, upload;
-    private EditText urlEdit;
-    private DatabaseHelper dbHelper;
 
+    private static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_BLUETOOTH_PERMISSIONS = 2;
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothManager bluetoothManager;
+    private ArrayList<String> pairedDevicesList;
+    private ArrayList<String> deviceMacAddresses;
+    private ActivityResultLauncher<Intent> bluetoothEnableLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,100 +47,109 @@ public class MicroProject extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        scan = findViewById(R.id.scan);
-        view = findViewById(R.id.view);
-        upload = findViewById(R.id.upload);
-        urlEdit = findViewById(R.id.url);
-        dbHelper = new DatabaseHelper(this);
+        bluetoothManager = getSystemService(BluetoothManager.class);
+        bluetoothAdapter = bluetoothManager.getAdapter();
+        bluetoothEnableLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK) {
+                        // Bluetooth has been enabled
+                        Toast.makeText(this, "Bluetooth enabled", Toast.LENGTH_SHORT).show();
+                        getPairedDevices();
+                    } else {
+                        // User declined to enable Bluetooth
+                        Toast.makeText(this, "Bluetooth not enabled", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+        ListView listView = findViewById(R.id.pairedDevice);
+        checkBluetoothPermissions();
 
-
-        upload.setOnClickListener(new View.OnClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                uploadData();
-            }
-        });
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Get the MAC address of the clicked device
+                String selectedMacAddress = deviceMacAddresses.get(position);
 
-        scan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent scanIntent = new Intent(MicroProject.this, Scanner.class);
-                startActivity(scanIntent);
-            }
-        });
-
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewIntent = new Intent(MicroProject.this, ViewData.class);
-                startActivity(viewIntent);
+                // Start the SwitchActivity and pass the MAC addressS
+                Intent intent = new Intent(MicroProject.this, SwitchActivity.class);
+                intent.putExtra("device_mac", selectedMacAddress);
+                intent.putExtra("device_name", pairedDevicesList.get(position));
+                startActivity(intent);
             }
         });
     }
 
+    // Function to check and request Bluetooth permissions
+    private void checkBluetoothPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-    private void uploadData() {
-//        String urlString = urlEdit.getText().toString().trim();
-        String urlString = "https://codewithmk.site/.netlify/functions/AdharData";
+                ActivityCompat.requestPermissions(this, new String[] {
+                        Manifest.permission.BLUETOOTH_SCAN,
+                        Manifest.permission.BLUETOOTH_CONNECT,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                }, REQUEST_BLUETOOTH_PERMISSIONS);
+            } else {
+                getAdapter();
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[] {
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                }, REQUEST_BLUETOOTH_PERMISSIONS);
+            } else {
+                getAdapter();
+            }
+        } else {
+            getAdapter();
+        }
+    }
 
-        if (!TextUtils.isEmpty(urlString)) {
-            if (!urlString.startsWith("http://") && !urlString.startsWith("https://")) {
-                urlString = "https://" + urlString;  // Prepend "http://" if missing
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_BLUETOOTH_PERMISSIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getAdapter();
+            } else {
+                Toast.makeText(this, "Bluetooth permissions are required", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void getPairedDevices() {
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        pairedDevicesList = new ArrayList<>();
+        deviceMacAddresses = new ArrayList<>();
+
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                pairedDevicesList.add(device.getName() + "\n" + device.getAddress());
+                deviceMacAddresses.add(device.getAddress());  // Store MAC addresses
             }
 
-            JSONArray jsonData = dbHelper.getDataAsJsonArray();
+            ListView listView = findViewById(R.id.pairedDevice);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, pairedDevicesList);
+            listView.setAdapter(adapter);
 
-            for (int i = 0; i < jsonData.length(); i++) {
-                try {
-                    String json = jsonData.getJSONObject(i).toString();
-                    OkHttpClient client = new OkHttpClient();
-
-                    // Create the JSON request body
-                    RequestBody body = RequestBody.create(json, MediaType.get("application/json; charset=utf-8"));
-
-                    // Build the request
-
-
-                    Request request = new Request.Builder()
-                            .url(urlString)
-                            .post(body)  // Use POST method
-                            .build();
-                    int c = 89;
-
-                    // Execute the request asynchronously
-                    client.newCall(request).enqueue(new okhttp3.Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            int a = 10;
-                            e.printStackTrace();
-
-                            // Handle the error here
-                        }
-
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            try {
-                                if (response.isSuccessful()) {
-                                    // Handle the successful response here
-                                    // Process the response if needed
-                                    String responseBody = response.body().string();
-
-                                    int a = 10;//                            Toast.makeText(MicroProject.this, responseBody, Toast.LENGTH_SHORT).show();
-                                } else {
-                                    int a = 20;
-                                    // Handle the unsuccessful response here
-                                    //                            Toast.makeText(MicroProject.this, "Unsucessful", Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (Exception e) {
-                                //                        Toast.makeText(MicroProject.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                int o = 90;
-                            }
-                        }
-                    });
-                } catch (Exception e) {
-                    int j = 89;
-                }
-            }
+        } else {
+            Toast.makeText(this, "No paired Bluetooth devices found", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void getAdapter(){
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth is not supported on this device", Toast.LENGTH_SHORT).show();
+            finish();
+        } else if (!bluetoothAdapter.isEnabled()) {
+            // Bluetooth is not enabled, prompt the user to enable it
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            bluetoothEnableLauncher.launch(enableBtIntent);
+        }else {
+            getPairedDevices();
         }
     }
 }

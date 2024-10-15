@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     ListView l;
@@ -51,10 +53,37 @@ public class MainActivity extends AppCompatActivity {
             "Practical-24: Google Account Login Integration"
     };
 
+    private final Class[] Practical_activities = {
+            about.class,
+            MicroProject.class,
+            Practical1.class,
+            Practical2.class,
+            Practical3.class,
+            Practical4.class,
+            Practical5.class,
+            Practical6.class,
+            Practical7.class,
+            Practical8.class,
+            Practical9.class,
+            Practical10.class,
+            Practical11.class,
+            Practical12.class,
+            Practical13.class,
+            Practical14.class,
+            Practical15.class,
+            Practical16.class,
+            Practical17.class,
+            Practical18.class,
+            Practical19.class,
+            Practical19.class,
+            Practical21.class,
+            Practical22.class,
+            Practical23 .class,
+            Practical24.class,
+    };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
@@ -67,73 +96,27 @@ public class MainActivity extends AppCompatActivity {
         l = findViewById(R.id.practicallist);
         ArrayAdapter<String> arr;
         arr = new ArrayAdapter<String>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, Practicals);
+
         l.setAdapter(arr);
 
 
         l.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i){
-                    case 0:
-                        Intent about = new Intent(MainActivity.this,about.class);
-                        startActivity(about);
-                        break;
-                    case 1:
-                        Intent micro = new Intent(MainActivity.this, MicroProject.class);
-                        startActivity(micro);
-                        break;
-                    case 2:
-                        Intent pr1 = new Intent(MainActivity.this,Practical1.class);
-                        startActivity(pr1);
-                        break;
-                    case 3:
-                        Intent pr2 = new Intent(MainActivity.this,Practical2.class);
-                        startActivity(pr2);
-                        break;
-                    case 4:
-                        Intent pr3 = new Intent(MainActivity.this,Practical3.class);
-                        startActivity(pr3);
-                        break;
-                    case 5:
-                        Intent pr4 = new Intent(MainActivity.this,Practical4.class);
-                        startActivity(pr4);
-                        break;
-                    case 6:
-                        Intent pr5 = new Intent(MainActivity.this,Practical5.class);
-                        startActivity(pr5);
-                        break;
-                    case 7:
-                        Intent pr6 = new Intent(MainActivity.this,Practical6.class);
-                        startActivity(pr6);
-                        break;
-                    case 8:
-                        Intent pr7 = new Intent(MainActivity.this,Practical7.class);
-                        startActivity(pr7);
-                        break;
-                    case 9:
-                        Intent pr8 = new Intent(MainActivity.this,Practical8.class);
-                        startActivity(pr8);
-                        break;
-                    case 10:
-                        Intent pr9 = new Intent(MainActivity.this,Practical9.class);
-                        startActivity(pr9);
-                        break;
-                    case 11:
-                        showInputDialog();
-                        break;
-                    case 12:
-                        Intent pr11 = new Intent(MainActivity.this,Practical11.class);
-                        startActivity(pr11);
-                        break;
-
-
-                    default:
-                        Toast.makeText(MainActivity.this, "Practical: "+(i-1)+" is comming soon", Toast.LENGTH_SHORT).show();
-
+                if (i == 11) {
+                    showInputDialog();
+                } else if (i < Practical_activities.length) {
+                    Intent intent = new Intent(MainActivity.this, Practical_activities[i]);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(MainActivity.this, "Practical: " + (i - 1) + " is comming soon", Toast.LENGTH_SHORT).show();
                 }
+
+
             }
         });
     }
+
     private void showInputDialog() {
         // Create EditText programmatically
         final EditText editTextInput = new EditText(this);
@@ -148,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         String inputText = editTextInput.getText().toString();
-                        Intent pr10 = new Intent(MainActivity.this,Practical10.class);
-                        pr10.putExtra("MSG",inputText);
+                        Intent pr10 = new Intent(MainActivity.this, Practical10.class);
+                        pr10.putExtra("MSG", inputText);
                         startActivity(pr10);
                     }
                 })

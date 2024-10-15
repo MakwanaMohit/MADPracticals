@@ -2,8 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="my_light_primary">#3030B5</color>
-    <color name="my_dark_primary">#FF000000</color>
+    <color name="my_light_primary">#ACDCE3</color>
+    <color name="my_dark_primary">#586A64</color>
     <color name="link">#1C49BA</color>
     <color name="light_blue_400">#FF29B6F6</color>
     <color name="light_blue_600">#FF039BE5</color>
