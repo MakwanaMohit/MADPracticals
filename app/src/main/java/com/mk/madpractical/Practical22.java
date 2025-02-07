@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,9 +30,6 @@ public class Practical22 extends FragmentActivity implements OnMapReadyCallback 
     private ActivityPractical22Binding binding;
     private ActivityResultLauncher<Intent> locationLoncher;
     private Marker currentMarker;
-
-
-
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(@NonNull Location location) {
@@ -44,22 +40,12 @@ public class Practical22 extends FragmentActivity implements OnMapReadyCallback 
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newLocation, 15));
 
         }
-
-
-
-
-
-
-
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
-
         @Override
         public void onProviderEnabled(@NonNull String provider) {
-
         }
-
         @Override
         public void onProviderDisabled(@NonNull String provider) {
             Toast.makeText(getApplicationContext(), "Please enable GPS and Internet", Toast.LENGTH_LONG).show();
@@ -69,10 +55,8 @@ public class Practical22 extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityPractical22Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -80,14 +64,11 @@ public class Practical22 extends FragmentActivity implements OnMapReadyCallback 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
-
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         addPointer();
     }
-
     private void addPointer() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -105,7 +86,10 @@ public class Practical22 extends FragmentActivity implements OnMapReadyCallback 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                addPointer();
+                // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(this);
             }else{
                 Toast.makeText(this, "location permission required to add pointer", Toast.LENGTH_SHORT).show();
             }

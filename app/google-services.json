@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "1072858018320",
+    "firebase_url": "https://mad-practical-f90f9-default-rtdb.firebaseio.com",
+    "project_id": "mad-practical-f90f9",
+    "storage_bucket": "mad-practical-f90f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072858018320:android:620e42cbd961d8e6b71095",
+        "android_client_info": {
+          "package_name": "com.legpm.pr17"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072858018320-1euetfsqd8pp88e1c7f7asjee6jn2f83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDXAQqeoUSqk15tZROn827qo0d6cajwyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072858018320-1euetfsqd8pp88e1c7f7asjee6jn2f83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072858018320:android:d907538104b3b775b71095",
+        "android_client_info": {
+          "package_name": "com.legpm.pr18"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072858018320-1euetfsqd8pp88e1c7f7asjee6jn2f83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDXAQqeoUSqk15tZROn827qo0d6cajwyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072858018320-1euetfsqd8pp88e1c7f7asjee6jn2f83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072858018320:android:17694ffa57ddc8f8b71095",
+        "android_client_info": {
+          "package_name": "com.mk.madpractical"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072858018320-f0f2cdga5teoovi48oli8c3l3kjub8m4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mk.madpractical",
+            "certificate_hash": "55be35ab5a3346801c311eb401fb8d843b4b606f"
+          }
+        },
+        {
+          "client_id": "1072858018320-til5ooradg9p6is8ade5b5d610qjple7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mk.madpractical",
+            "certificate_hash": "9619481f1b6e2995ac90de161037938cfd8794df"
+          }
+        },
+        {
+          "client_id": "1072858018320-1euetfsqd8pp88e1c7f7asjee6jn2f83.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDXAQqeoUSqk15tZROn827qo0d6cajwyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072858018320-1euetfsqd8pp88e1c7f7asjee6jn2f83.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
