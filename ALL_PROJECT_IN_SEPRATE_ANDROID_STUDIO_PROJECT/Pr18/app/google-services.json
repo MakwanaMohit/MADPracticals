@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "1072858018320",
+    "firebase_url": "https://mad-practical-f90f9-default-rtdb.firebaseio.com",
+    "project_id": "mad-practical-f90f9",
+    "storage_bucket": "mad-practical-f90f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072858018320:android:d907538104b3b775b71095",
+        "android_client_info": {
+          "package_name": "com.legpm.pr18"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDXAQqeoUSqk15tZROn827qo0d6cajwyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072858018320:android:17694ffa57ddc8f8b71095",
+        "android_client_info": {
+          "package_name": "com.mk.madpractical"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDXAQqeoUSqk15tZROn827qo0d6cajwyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124530602929",
+    "project_id": "authentication-6aa62",
+    "storage_bucket": "authentication-6aa62.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124530602929:android:48f7ba32dc8a3ebabb4390",
+        "android_client_info": {
+          "package_name": "com.legpm.pr24"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA_I4yVR8ato8bMJW_5KztWnpFNVCvuJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
